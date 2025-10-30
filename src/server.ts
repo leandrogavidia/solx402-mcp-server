@@ -11,6 +11,7 @@ import { mcpConfig } from "./config/index.js";
 import { McpLogger } from "./utils/logger.js";
 
 import { useFacilitator } from "x402/verify";
+import { createX402DocsMcpClient } from "./clients/x402-docs.js";
 
 async function createMcpServer() {
     const server = new McpServer(
@@ -29,6 +30,62 @@ async function createMcpServer() {
 
     // x402 Bazaar (Discovery Layer)
 
+    const { listTools } = await createX402DocsMcpClient();
+    const x402Tools = await listTools();
+
+    McpLogger.log(`Registering ${x402Tools.length} X402 Docs MCP tools`);
+
+    for (const tool of x402Tools) {
+        McpLogger.log(JSON.stringify(tool, null, 2));
+    }
+
+
+    server.registerTool(
+        "search_x402_documentation",
+        {
+            title: "Search X402 Documentation",
+            description: "Search across the documentation to find relevant information, code examples, API references, and guides. Use this tool when you need to answer questions about x402, find specific documentation, understand how features work, or locate implementation details. The search returns contextual content with titles and direct links to the documentation pages.",
+            inputSchema: {
+                query: z.string().describe("The search query string"),
+            }
+        },
+        async ({ query }: { query: string }) => {
+            try {
+                const x402DocsMcpClient = await createX402DocsMcpClient();
+
+                const response = await x402DocsMcpClient.client.callTool({ name: "searchDocumentation", arguments: { query } })
+
+                return {
+                    content: [
+                        {
+                            type: "text",
+                            text: JSON.stringify(response, null, 2),
+                        },
+                    ],
+                };
+
+            } catch (err) {
+                const isAbort = (err as Error)?.name === "AbortError";
+
+                return {
+                    content: [
+                        {
+                            type: "text",
+                            text: JSON.stringify(
+                                {
+                                    error: isAbort ? "Request timed out" : "Failed to fetch documentation",
+                                    reason: String((err as Error)?.message ?? err),
+                                },
+                                null,
+                                2
+                            ),
+                        },
+                    ],
+                };
+            }
+        }
+    )
+
     server.registerTool(
         "get_x402_services",
         {
@@ -39,7 +96,7 @@ async function createMcpServer() {
             },
         },
         async ({ limit = 500 }: { limit?: number | undefined }) => {
-            
+
             const { list } = useFacilitator({
                 url: mcpConfig.environment.facilitatorUrl,
             });
@@ -49,7 +106,7 @@ async function createMcpServer() {
             });
 
             let solanaServices = services.items.filter(service => service.accepts[0]?.network === mcpConfig.network)
-            
+
             if (mcpConfig.environment.maxPrice > 0) {
                 solanaServices = solanaServices.filter(service => {
                     const maxAmount = service.accepts[0]?.maxAmountRequired;
