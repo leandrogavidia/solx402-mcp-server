@@ -8,3 +8,9 @@ export const isMainnet = process.env.IS_MAINNET === "true";
 
 export const facilitatorUrl = process.env.FACILITATOR_URL as `${string}://${string}` || PAYAI_FACILITATOR_URL
 export const maxPrice = Number(process.env.MAX_PRICE || 0);
+
+export const privateKey = process.env.PRIVATE_KEY || "";
+
+if (!privateKey) {
+  throw new Error("PRIVATE_KEY environment variable is not set.");
+}

@@ -12,6 +12,7 @@ import { McpLogger } from "./utils/logger.js";
 
 import { useFacilitator } from "x402/verify";
 import { createX402DocsMcpClient } from "./clients/x402-docs.js";
+import { createSigner } from "./on-chain/wallet.js";
 
 async function createMcpServer() {
     const server = new McpServer(
@@ -26,19 +27,7 @@ async function createMcpServer() {
         },
     );
 
-
-
-    // x402 Bazaar (Discovery Layer)
-
-    const { listTools } = await createX402DocsMcpClient();
-    const x402Tools = await listTools();
-
-    McpLogger.log(`Registering ${x402Tools.length} X402 Docs MCP tools`);
-
-    for (const tool of x402Tools) {
-        McpLogger.log(JSON.stringify(tool, null, 2));
-    }
-
+    // X402 Documentation Search Tool
 
     server.registerTool(
         "search_x402_documentation",
@@ -85,6 +74,8 @@ async function createMcpServer() {
             }
         }
     )
+
+    // x402 Bazaar (Discovery Layer)
 
     server.registerTool(
         "get_x402_services",
