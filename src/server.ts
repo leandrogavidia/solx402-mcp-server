@@ -15,7 +15,7 @@ import { McpLogger } from "./utils/logger.js";
 
 import { useFacilitator } from "x402/verify";
 import { createX402DocsMcpClient } from "./clients/x402-docs.js";
-// import { getFetchWithPayerHandler, getkeypair } from "./on-chain/wallet.js";
+import { getkeypair, getSigner } from "./on-chain/wallet.js";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { lookupKnownSPLToken } from "@faremeter/info/solana";
 import { getAssociatedTokenAddress, getAccount } from "@solana/spl-token";
@@ -24,9 +24,6 @@ import { USDC_DECIMALS } from "./config/constants.js";
 import { withPaymentInterceptor, decodeXPaymentResponse } from "x402-axios";
 import axios from "axios";
 
-import { createKeyPairSignerFromBytes } from "@solana/kit";
-import { base58 } from "@scure/base";
-import { getkeypair, getSigner } from "./on-chain/wallet.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -38,10 +35,7 @@ async function createMcpServer() {
             version: mcpConfig.server.version,
         },
         {
-            capabilities: {
-                tools: {},
-                resources: {},
-            },
+            capabilities: {},
         },
     );
 
