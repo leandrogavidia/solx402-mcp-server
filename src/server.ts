@@ -15,11 +15,18 @@ import { McpLogger } from "./utils/logger.js";
 
 import { useFacilitator } from "x402/verify";
 import { createX402DocsMcpClient } from "./clients/x402-docs.js";
-import { getkeypair } from "./on-chain/wallet.js";
+// import { getFetchWithPayerHandler, getkeypair } from "./on-chain/wallet.js";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { lookupKnownSPLToken } from "@faremeter/info/solana";
 import { getAssociatedTokenAddress, getAccount } from "@solana/spl-token";
 import { USDC_DECIMALS } from "./config/constants.js";
+
+import { withPaymentInterceptor, decodeXPaymentResponse } from "x402-axios";
+import axios from "axios";
+
+import { createKeyPairSignerFromBytes } from "@solana/kit";
+import { base58 } from "@scure/base";
+import { getkeypair, getSigner } from "./on-chain/wallet.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -84,7 +91,7 @@ async function createMcpServer() {
                 query: z.string().describe("The search query string"),
             }
         },
-        async ({ query }: { query: string }) => {
+        async ({ query }) => {
             try {
                 const x402DocsMcpClient = await createX402DocsMcpClient();
 
@@ -132,7 +139,7 @@ async function createMcpServer() {
                 limit: z.number().min(1).optional().describe("Maximum number of services to retrieve"),
             },
         },
-        async ({ limit = 500 }: { limit?: number | undefined }) => {
+        async ({ limit = 500 }) => {
 
             const { list } = useFacilitator({
                 url: mcpConfig.environment.facilitatorUrl,
@@ -249,6 +256,112 @@ async function createMcpServer() {
             }
         }
     );
+
+    server.registerTool(
+        "consume_x402_service",
+        {
+            title: "Consume X402 Service",
+            description: "Consume a specific X402 service.",
+            inputSchema: {
+                x402ServiceUrl: z.string().describe("The URL of the X402 service to consume"),
+            },
+        },
+        async ({ x402ServiceUrl }) => {
+            const startTime = Date.now();
+            try {
+                const signer = await getSigner();
+
+                const url = new URL(x402ServiceUrl);
+                const baseURL = `${url.protocol}//${url.host}`;
+                const path = url.pathname + url.search;
+
+                const api = withPaymentInterceptor(
+                    axios.create({
+                        baseURL: baseURL,
+                        timeout: 60000,
+                        headers: {
+                            'User-Agent': 'solx402-mcp-server/1.0.0',
+                        },
+                    }),
+                    signer,
+                );
+
+                const response = await api.get(path);
+                const duration = Date.now() - startTime;
+
+                let paymentResponse = null;
+
+                try {
+                    if (response.headers["x-payment-response"]) {
+                        paymentResponse = decodeXPaymentResponse(response.headers["x-payment-response"]);
+                        McpLogger.info(`Payment response decoded successfully`);
+                    } else {
+                        McpLogger.warn(`No x-payment-response header found in response`);
+                    }
+                } catch (decodeError) {
+                    McpLogger.error(`Failed to decode payment response: ${decodeError}`);
+                    paymentResponse = {
+                        error: "Failed to decode payment response",
+                        rawHeader: response.headers["x-payment-response"],
+                        decodeError: String(decodeError)
+                    };
+                }
+
+                return {
+                    content: [
+                        {
+                            type: "text",
+                            text: JSON.stringify({
+                                success: true,
+                                url: x402ServiceUrl,
+                                status: response.status,
+                                duration: `${duration}ms`,
+                                data: response.data,
+                                paymentResponse: paymentResponse,
+                                timestamp: new Date().toISOString(),
+                            }, null, 2),
+                        },
+                    ],
+                };
+            } catch (error) {
+                const duration = Date.now() - startTime;
+                McpLogger.error(`X402 service consumption failed after ${duration}ms: ${error}`);
+
+                const errorInfo = {
+                    success: false,
+                    url: x402ServiceUrl,
+                    duration: `${duration}ms`,
+                    error: "Failed to consume x402 service",
+                    timestamp: new Date().toISOString(),
+                    details: {} as any,
+                };
+
+                if (axios.isAxiosError(error)) {
+                    errorInfo.details = {
+                        status: error.response?.status,
+                        statusText: error.response?.statusText,
+                        data: error.response?.data,
+                        timeout: error.code === 'ECONNABORTED',
+                        network: error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED',
+                    };
+                } else {
+                    errorInfo.details = {
+                        message: (error as Error)?.message || String(error),
+                        type: (error as Error)?.name || 'Unknown',
+                    };
+                }
+
+                return {
+                    content: [
+                        {
+                            type: "text",
+                            text: JSON.stringify(errorInfo, null, 2),
+                        },
+                    ],
+                };
+            }
+        }
+    )
 
     return server;
 }
