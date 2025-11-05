@@ -131,40 +131,59 @@ async function createMcpServer() {
             title: "Get X402 Services",
             description: "Retrieve a list of available X402 services from the facilitator.",
             inputSchema: {
-                limit: z.number().min(1).optional().describe("Maximum number of services to retrieve"),
+                facilitatorUrl: z.string().url().default(mcpConfig.environment.facilitatorUrl).describe("The URL of the facilitator to query"),
+                limit: z.number().min(1).default(500).optional().describe("Maximum number of services to retrieve"),
             },
         },
-        async ({ limit = 500 }) => {
-
-            const { list } = useFacilitator({
-                url: mcpConfig.environment.facilitatorUrl,
-            });
-
-            const services = await list({
-                limit,
-            });
-
-            let solanaServices = services.items.filter(service => service.accepts[0]?.network === mcpConfig.network)
-
-            if (mcpConfig.environment.maxPrice > 0) {
-                solanaServices = solanaServices.filter(service => {
-                    const maxAmount = service.accepts[0]?.maxAmountRequired;
-                    return maxAmount !== undefined && Number(maxAmount) <= mcpConfig.environment.maxPrice;
+        async ({ limit = 500, facilitatorUrl = mcpConfig.environment.facilitatorUrl }) => {
+            try {
+                const { list } = useFacilitator({
+                    url: facilitatorUrl as `${string}://${string}`,
                 });
-            }
 
-            return {
-                content: [
-                    {
-                        type: "text",
-                        text: JSON.stringify({
-                            services: solanaServices,
-                            totalServices: solanaServices.length,
-                            x402Version: services.x402Version
-                        }, null, 2),
-                    },
-                ],
-            };
+                const services = await list({
+                    limit,
+                });
+
+                let solanaServices = services.items.filter(service => service.accepts[0]?.network === mcpConfig.network)
+
+                if (mcpConfig.environment.maxPrice > 0) {
+                    solanaServices = solanaServices.filter(service => {
+                        const maxAmount = service.accepts[0]?.maxAmountRequired;
+                        return maxAmount !== undefined && Number(maxAmount) <= mcpConfig.environment.maxPrice;
+                    });
+                }
+
+                return {
+                    content: [
+                        {
+                            type: "text",
+                            text: JSON.stringify({
+                                services: solanaServices,
+                                totalServices: solanaServices.length,
+                                x402Version: services.x402Version
+                            }, null, 2),
+                        },
+                    ],
+                };
+            } catch (err) {
+                McpLogger.error(`Failed to fetch X402 services: ${err}`);
+                return {
+                    content: [
+                        {
+                            type: "text",
+                            text: JSON.stringify(
+                                {
+                                    error: "Failed to fetch X402 services",
+                                    reason: String((err as Error)?.message ?? err),
+                                },
+                                null,
+                                2
+                            ),
+                        },
+                    ],
+                };
+            }
         }
     )
 
