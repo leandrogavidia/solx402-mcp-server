@@ -1,7 +1,6 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { createGitbookMcpClient } from "./gitbook.js";
 import { mcpConfig } from "../config/index.js";
-import { McpLogger } from "../utils/logger.js";
 
 export async function createX402DocsMcpClient(): Promise<{
     client: Client;
@@ -15,7 +14,7 @@ export async function createX402DocsMcpClient(): Promise<{
         });
         return x402DocsMcpClient
     } catch (err) {
-        McpLogger.error("Error creating X402 Docs MCP Client:", String(err));
+        console.error("Error creating X402 Docs MCP Client:", String(err));
         throw err;
     }
 }

@@ -1,4 +1,3 @@
-import { privateKey } from "../config/environment.js";
 // import { lookupKnownSPLToken } from "@faremeter/info/solana";
 // import { mcpConfig } from "../config/index.js";
 import { Connection, Keypair, PublicKey, VersionedTransaction } from "@solana/web3.js";
@@ -8,12 +7,12 @@ import bs58 from "bs58";
 import { base58 } from "@scure/base";
 import { createKeyPairSignerFromBytes } from "@solana/kit";
 
-export const getkeypair = () => {
+export const getkeypair = (privateKey: string) => {
     const keypair = Keypair.fromSecretKey(bs58.decode(privateKey));
     return keypair
 }
 
-export const getSigner = async () => {
+export const getSigner = async (privateKey: string) => {
     try {
         const signer = await createKeyPairSignerFromBytes(
             base58.decode(privateKey)

@@ -1,7 +1,6 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 import type { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
-import { McpLogger } from "../utils/logger.js"; 
 
 export async function createGitbookMcpClient({
     name,
@@ -37,7 +36,7 @@ export async function createGitbookMcpClient({
             },
         };
     } catch (error) {
-        McpLogger.error("Error connecting to GitBookClient:", String(error));
+        console.error("Error connecting to GitBookClient:", String(error));
         throw error;
     }
 }

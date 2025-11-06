@@ -78,58 +78,102 @@
 
 ### Configuration Examples:
 
-For **Cline** users, add this to your MCP client configuration:
 ```json
 {
   "mcpServers": {
     "solx402": {
-      "url": "",
+      "url": "<mcp-url>/mcp?privateKey=<your-bs58-private-key>&mainnetRpcUrl=<your-solana-mainnet-rpc>",
       "type": "streamable-http",
-      "timeout": 60000
+      "timeout": 120000 // 2 Minutes
     }
   }
 }
+```
+
+### Query Parameters:
+
+The MCP server now accepts configuration through URL query parameters, making setup simpler and more flexible:
+
+- **`privateKey`** (required): Base58-encoded private key for your Solana wallet
+- **`mainnetRpcUrl`** (required): Solana RPC URL for mainnet operations
+
+- **`isMainnet`** (optional): Set to true for mainnet, false for devnet (Default: false)
+- **`facilitatorUrl`** (optional): URL of the x402 facilitator (default: PayAI Facilitator URL)
+- **`maxPrice`** (optional): Maximum price to pay for services in USDC microcents, e.g. 10000 = 0.01 USDC (default: 0)
+- **`useSolanaMcpServer`** (optional): Enable Solana development tools integration (default: false)
+
+**Example URL:**
+```bash
+http://127.0.0.1:8001/mcp?privateKey=5J2K...&mainnetRpcUrl=https://api.mainnet-beta.solana.com&maxPrice=50000&useSolanaMcpServer=true&isMainnet=true&facilitatorUrl=https://facilitator.payai.network
 ```
 
 ### Related Issues:
 - [Cline PR #1904](https://github.com/cline/cline/pull/1904) - Request timeout configuration
 - [Cline Issue #4391](https://github.com/cline/cline/issues/4391) - Timeout-related problems
 
-**Note:** Always ensure your MCP client timeout is at least 60 seconds to prevent payment issues and service consumption failures.
+**Note:** Always ensure your MCP client timeout is at least 120 seconds to prevent payment issues and service consumption failures.
 
 ---
 
-## .env Config
+## Configuration Options
 
-- `PRIVATE_KEY`: Base58-encoded private key for your Solana wallet (required for x402 service consumption and payments).
+### 1. Query Parameters 
+Pass configuration directly in the MCP client URL as shown in the examples above.
 
-- `FACILITATOR_URL`: URL of the x402 facilitator (default: https://facilitator.example.com).
+### 2. Environment Variables
+You can use environment variables:
 
-- `MAX_PRICE`: Maximum price to pay for services in USDC microcents (e.g., 10000 = 0.01 USDC).
+- `PORT`: Port where your MCP server will run (default: 8001)
+- `HOST`: Host where your MCP server will run (default: 127.0.0.1)
 
-- `IS_MAINNET`: Set to `true` for mainnet, `false` for devnet.
+## Development Setup
 
-- `MAINNET_RPC_URL`: Solana RPC URL for mainnet operations.
+### Quick Start (Without Compilation)
 
-- `DEVNET_RPC_URL`: Solana RPC URL for devnet operations.
+1. **Terminal 1** - Start the development server:
+   ```bash
+   pnpm dev
+   ```
 
-- `USE_SOLANA_MCP_SERVER`: Set to `true` to enable Solana development tools integration (default: false).
+2. **Terminal 2** - Run the MCP server inspector:
+   ```bash
+   pnpm run stdio 
+   ```
 
-- `USE_STREAMABLE_HTTP`: Specifies whether your MCP server will run on stdio or streamable-http (set to `true` or `false`).
+    Then, in the following fields, add this setup:
 
-- `PORT`: Port where your MCP server will run when using streamable-http (default: 3000).
+    1. **Transport Type:** Streamable HTTP
+    
+    2. **URL:** http://127.0.0.1:8001/mcp?privateKey=<your-private-key>&mainnetRpcUrl=<your-mainnet-rpc>
 
-- `HOST`: Host where your MCP server will run when using streamable-http (default: 127.0.0.1).
+    3. **Configuration:** 
 
-## Run the project locally
+        3.1 **Request Timeout:** 120000
 
-In one terminal window, run the following command: `pnpm dev` in `stdio` mode.
+    Then, click the Connect button.
 
-## Build and run
+    **Note:** If you encounter the following error:
 
-Run the command: `pnpm run build` and then: `pnpm run start`
+    ```
+    Connection Error - Check if your MCP server is running and proxy token is correct
+    ``` 
 
-**Note:** Run in http mode
+    please verify your URL and query parameters and review the terminal logs.
+
+
+### Build and Run (Production)
+
+1. Build the project:
+   ```bash
+   pnpm run build
+   ```
+
+2. Start the server:
+   ```bash
+   pnpm run start
+   ```
+
+**Note:** For MCP client integration, use the HTTP mode with query parameters as shown in the configuration examples above.
 
 ---
 

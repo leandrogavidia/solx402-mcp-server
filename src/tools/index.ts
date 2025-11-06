@@ -1,12 +1,10 @@
 import z from "zod";
 import type { ToolDefinition } from "../types/index.js";
-import { McpLogger } from "../utils/logger.js";
 import { promises as fs } from "fs";
 
 import path from "path";
 import { fileURLToPath } from "url";
 import { createX402DocsMcpClient } from "../clients/x402-docs.js";
-import { mcpConfig } from "../config/index.js";
 import { useFacilitator } from "x402/verify";
 import { getkeypair, getSigner } from "../on-chain/wallet.js";
 import { Connection, PublicKey } from "@solana/web3.js";
@@ -21,7 +19,7 @@ import { createSolanaMcpClient } from "../clients/solana.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const solX402Tools: ToolDefinition[] = [
+export const solX402Tools: ToolDefinition[] = [
     // Register x402 Protocol Flow Diagram Resource
 
     {
@@ -33,9 +31,10 @@ const solX402Tools: ToolDefinition[] = [
         },
         callback: async () => {
             try {
-                const imagePath = path.join(__dirname, "..", "assets", "x402-protocol-flow.avif");
+                const imagePath = path.join(__dirname, "../../", "assets", "x402-protocol-flow.avif");
                 const imageBuffer = await fs.readFile(imagePath);
                 const base64Image = imageBuffer.toString("base64");
+
                 return {
                     content: [
                         {
@@ -50,7 +49,7 @@ const solX402Tools: ToolDefinition[] = [
                     ],
                 };
             } catch (err) {
-                McpLogger.error(`Failed to read x402-protocol-flow.avif: ${err}`);
+                console.error(`Failed to read x402-protocol-flow.avif: ${err}`);
                 throw new Error(`Failed to read resource: ${(err as Error)?.message ?? err}`);
             }
         }
@@ -112,26 +111,30 @@ const solX402Tools: ToolDefinition[] = [
             title: "Get X402 Services",
             description: "Retrieve a list of available X402 services from the facilitator.",
             inputSchema: {
-                facilitatorUrl: z.string().url().default(mcpConfig.environment.facilitatorUrl).describe("The URL of the facilitator to query"),
+                facilitatorUrl: z.string().url().optional().describe("The URL of the X402 facilitator to query (By default your facilitator url"),
                 limit: z.number().min(1).default(500).optional().describe("Maximum number of services to retrieve"),
             },
         },
-        callback: async ({ limit = 500, facilitatorUrl = mcpConfig.environment.facilitatorUrl }) => {
+        callback: async ({ limit = 500, facilitatorUrl }, sessionConfig) => {
             try {
+                const maxPrice = sessionConfig.maxPrice;
+                const isMainnet = sessionConfig.isMainnet;
+
                 const { list } = useFacilitator({
-                    url: facilitatorUrl as `${string}://${string}`,
+                    url: facilitatorUrl as `${string}://${string}` || sessionConfig.facilitatorUrl,
                 });
 
                 const services = await list({
                     limit,
                 });
 
-                let solanaServices = services.items.filter(service => service.accepts[0]?.network === mcpConfig.network)
+                const network = isMainnet ? "solana" : "solana-devnet";
+                let solanaServices = services.items.filter(service => service.accepts[0]?.network === network)
 
-                if (mcpConfig.environment.maxPrice > 0) {
+                if (maxPrice > 0) {
                     solanaServices = solanaServices.filter(service => {
                         const maxAmount = service.accepts[0]?.maxAmountRequired;
-                        return maxAmount !== undefined && Number(maxAmount) <= mcpConfig.environment.maxPrice;
+                        return maxAmount !== undefined && Number(maxAmount) <= maxPrice;
                     });
                 }
 
@@ -142,13 +145,18 @@ const solX402Tools: ToolDefinition[] = [
                             text: JSON.stringify({
                                 services: solanaServices,
                                 totalServices: solanaServices.length,
-                                x402Version: services.x402Version
+                                x402Version: services.x402Version,
+                                config: {
+                                    facilitatorUrl,
+                                    maxPrice,
+                                    network,
+                                }
                             }, null, 2),
                         },
                     ],
                 };
             } catch (err) {
-                McpLogger.error(`Failed to fetch X402 services: ${err}`);
+                console.error(`Failed to fetch X402 services: ${err}`);
                 return {
                     content: [
                         {
@@ -177,10 +185,13 @@ const solX402Tools: ToolDefinition[] = [
             description: "Retrieve the public key of the configured wallet.",
             inputSchema: {},
         },
-        callback: async () => {
+        callback: async (args, sessionConfig) => {
             try {
-                const keypair = getkeypair();
+                const keypair = getkeypair(sessionConfig.privateKey);
                 const walletPublicKey = keypair.publicKey.toBase58();
+
+                const isMainnet = sessionConfig.isMainnet;
+                const network = isMainnet ? "solana" : "solana-devnet";
 
                 return {
                     content: [
@@ -189,6 +200,7 @@ const solX402Tools: ToolDefinition[] = [
                             text: JSON.stringify(
                                 {
                                     walletPublicKey,
+                                    network,
                                 },
                                 null,
                                 2
@@ -225,12 +237,20 @@ const solX402Tools: ToolDefinition[] = [
             description: "Retrieve the USDC balance of the configured wallet.",
             inputSchema: {},
         },
-        callback: async () => {
+        callback: async (args, sessionConfig) => {
             try {
-                const keypair = getkeypair();
-                const connection = new Connection(mcpConfig.rpcUrl);
+                const isMainnet = sessionConfig.isMainnet;
 
-                const usdcInfo = lookupKnownSPLToken(mcpConfig.clusterId, "USDC");
+                const rpcUrl = isMainnet
+                    ? sessionConfig.mainnetRpcUrl
+                    : (sessionConfig.devnetRpcUrl);
+
+                const clusterId = isMainnet ? "mainnet-beta" : "devnet";
+
+                const keypair = getkeypair(sessionConfig.privateKey);
+                const connection = new Connection(rpcUrl);
+
+                const usdcInfo = lookupKnownSPLToken(clusterId, "USDC");
 
                 if (!usdcInfo) {
                     throw new Error("USDC token info not found");
@@ -256,7 +276,7 @@ const solX402Tools: ToolDefinition[] = [
                     balanceFormatted = (balance / Math.pow(10, decimals)).toFixed(USDC_DECIMALS);
                     accountExists = true;
                 } catch (error) {
-                    McpLogger.warn(`Token account not found or error: ${error}`);
+                    console.warn(`Token account not found or error: ${error}`);
                 }
 
                 return {
@@ -266,7 +286,7 @@ const solX402Tools: ToolDefinition[] = [
                             text: JSON.stringify(
                                 {
                                     wallet: walletPublicKey.toBase58(),
-                                    network: mcpConfig.clusterId,
+                                    network: clusterId,
                                     tokenAccount: tokenAccountAddress.toBase58(),
                                     accountExists,
                                     balance: balance,
@@ -311,10 +331,10 @@ const solX402Tools: ToolDefinition[] = [
                 x402ServiceUrl: z.string().describe("The URL of the X402 service to consume"),
             },
         },
-        callback: async ({ x402ServiceUrl }) => {
+        callback: async ({ x402ServiceUrl }, sessionConfig) => {
             const startTime = Date.now();
             try {
-                const signer = await getSigner();
+                const signer = await getSigner(sessionConfig.privateKey);
 
                 const url = new URL(x402ServiceUrl);
                 const baseURL = `${url.protocol}//${url.host}`;
@@ -339,12 +359,12 @@ const solX402Tools: ToolDefinition[] = [
                 try {
                     if (response.headers["x-payment-response"]) {
                         paymentResponse = decodeXPaymentResponse(response.headers["x-payment-response"]);
-                        McpLogger.info(`Payment response decoded successfully`);
+                        console.info(`Payment response decoded successfully`);
                     } else {
-                        McpLogger.warn(`No x-payment-response header found in response`);
+                        console.warn(`No x-payment-response header found in response`);
                     }
                 } catch (decodeError) {
-                    McpLogger.error(`Failed to decode payment response: ${decodeError}`);
+                    console.error(`Failed to decode payment response: ${decodeError}`);
                     paymentResponse = {
                         error: "Failed to decode payment response",
                         rawHeader: response.headers["x-payment-response"],
@@ -370,7 +390,7 @@ const solX402Tools: ToolDefinition[] = [
                 };
             } catch (error) {
                 const duration = Date.now() - startTime;
-                McpLogger.error(`X402 service consumption failed after ${duration}ms: ${error}`);
+                console.error(`X402 service consumption failed after ${duration}ms: ${error}`);
 
                 const errorInfo = {
                     success: false,
@@ -438,7 +458,7 @@ const solX402Tools: ToolDefinition[] = [
 
 ];
 
-const solanaMcpServerTools: ToolDefinition[] = [
+export const solanaMcpServerTools: ToolDefinition[] = [
     // Solana Anchor Framework Expert Tool
 
     {
@@ -591,5 +611,3 @@ const solanaMcpServerTools: ToolDefinition[] = [
         }
     },
 ];
-
-export const tools: ToolDefinition[] = mcpConfig.environment.useSolanaMcpServer ? [...solX402Tools, ...solanaMcpServerTools] : solX402Tools;

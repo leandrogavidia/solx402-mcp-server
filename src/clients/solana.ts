@@ -1,8 +1,6 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 import type { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
-import { McpLogger } from "../utils/logger.js";
-import { SOLANA_MCP_SERVER_URL } from "../config/constants.js";
 import { mcpConfig } from "../config/index.js";
 
 export async function createSolanaMcpClient() {
@@ -31,7 +29,7 @@ export async function createSolanaMcpClient() {
             },
         };
     } catch (error) {
-        McpLogger.error("Error connecting to GitBookClient:", String(error));
+        console.error("Error connecting to GitBookClient:", String(error));
         throw error;
     }
 }
