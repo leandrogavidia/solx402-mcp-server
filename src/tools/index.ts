@@ -168,6 +168,54 @@ const solX402Tools: ToolDefinition[] = [
         }
     },
 
+    // Get Public Key
+
+    {
+        name: "get_wallet_public_key",
+        config: {
+            title: "Get Wallet Public Key",
+            description: "Retrieve the public key of the configured wallet.",
+            inputSchema: {},
+        },
+        callback: async () => {
+            try {
+                const keypair = getkeypair();
+                const walletPublicKey = keypair.publicKey.toBase58();
+
+                return {
+                    content: [
+                        {
+                            type: "text",
+                            text: JSON.stringify(
+                                {
+                                    walletPublicKey,
+                                },
+                                null,
+                                2
+                            ),
+                        },
+                    ],
+                };
+            } catch (err) {
+                return {
+                    content: [
+                        {
+                            type: "text",
+                            text: JSON.stringify(
+                                {
+                                    error: "Failed to fetch wallet public key",
+                                    reason: String((err as Error)?.message ?? err),
+                                },
+                                null,
+                                2
+                            ),
+                        },
+                    ],
+                };
+            }
+        }
+    },
+
     // Get USDC Balance
 
     {

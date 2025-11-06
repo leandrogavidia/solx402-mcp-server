@@ -10,7 +10,6 @@ import { McpLogger } from "./utils/logger.js";
 
 import { tools } from "./tools/index.js";
 
-
 async function createMcpServer() {
     const server = new McpServer(
         {

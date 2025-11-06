@@ -12,11 +12,11 @@ importers:
         specifier: 0.7.0
         version: 0.7.0(@solana/sysvars@5.0.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.90.5)(@tanstack/react-query@5.90.5(react@18.3.1))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@faremeter/fetch':
-        specifier: 0.10.3
-        version: 0.10.3
+        specifier: 0.11.0
+        version: 0.11.0
       '@faremeter/info':
-        specifier: 0.10.3
-        version: 0.10.3
+        specifier: 0.11.0
+        version: 0.11.0
       '@faremeter/payment-solana':
         specifier: 0.10.3
         version: 0.10.3(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3)(utf-8-validate@5.0.10)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
@@ -51,8 +51,8 @@ importers:
         specifier: 5.1.0
         version: 5.1.0
       facilitators:
-        specifier: ^0.0.7
-        version: 0.0.7(@solana/sysvars@5.0.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.90.5)(@tanstack/react-query@5.90.5(react@18.3.1))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+        specifier: 0.0.8
+        version: 0.0.8(@solana/sysvars@5.0.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.90.5)(@tanstack/react-query@5.90.5(react@18.3.1))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       gill:
         specifier: 0.12.0
         version: 0.12.0(@solana/sysvars@5.0.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
@@ -306,17 +306,23 @@ packages:
     resolution: {integrity: sha512-zQ0IqbdX8FZ9aw11vP+dZkKDkS+kgIvQPHnSAXzP9pLu+Rfu3D3XEeLbicvoXJTYnhZiPmsZUxgdzXwNKxRPbA==}
     engines: {node: '>=14'}
 
-  '@faremeter/fetch@0.10.3':
-    resolution: {integrity: sha512-iJWSnvNhM4AZdevMh5uO8U6u2PU96nOkK+AJbIaBdGr6V62pEcV1XkQUxmERWdrtix5xXcZFw2aOeZDGYjeKhQ==}
+  '@faremeter/fetch@0.11.0':
+    resolution: {integrity: sha512-Xy/O7wjmVzUEGkQOhxofShphhhbts7gAKYudXuAx+ZMW1dl2pmRBFwaT/8dhUtw67I+G/GwEtAewlaoLZCyFfA==}
 
   '@faremeter/info@0.10.3':
     resolution: {integrity: sha512-zwHoZTZ0Ny8ph6p01LOJ5Krzgh4mPZynFwl8VRz+fEW4iKXg09fdsKnE64i4dPkkAWHrpxSduj02lsnpXmoEzw==}
+
+  '@faremeter/info@0.11.0':
+    resolution: {integrity: sha512-GQexaWenji1uQYkfvVpqzwKMtNVrw9W74z3DbOKnGQ0TGjC8E10tZDul2k/huT+TBEWwRZF1qb3exMxgxJQY8Q==}
 
   '@faremeter/payment-solana@0.10.3':
     resolution: {integrity: sha512-OQzF8w3fxRfm1YWb2H6rcSXENiMYyhqE8ryYA5qzL5QE7iKsFrg4kDpyVY3SexE/LSsF0qUEL3Z69NX430bnjg==}
 
   '@faremeter/types@0.10.3':
     resolution: {integrity: sha512-+ScPJE8OZ2KdH57wtUXfZRMhGRFOpKuRem4N+c3HfVVHfk2iLLaH2a41hGIesAMeKlvwZ0CSZMRrqzVC0ap85w==}
+
+  '@faremeter/types@0.11.0':
+    resolution: {integrity: sha512-7jQ7Y4kBpiDmBiPGfsyH8NCFPxLRb8ubegzpx50PetQrzYUv2sE9uhSa/oOzd/ZjiN6RJujKXuLX0jVPjNa2XA==}
 
   '@gemini-wallet/core@0.3.1':
     resolution: {integrity: sha512-XP+/NRAaRV7Adlt6aFxrF/3a0i3qpxFTSVm/dzG+mceXTSgIGOUUT65w69ttLQ/GWEcAEQL/hKoV6PFAJA/DmQ==}
@@ -1454,15 +1460,6 @@ packages:
     peerDependencies:
       react: ^18 || ^19
 
-  '@thirdweb-dev/nexus@0.1.0':
-    resolution: {integrity: sha512-89ooXXVvrg/bAI9wjquqH0JoonDo1qNW9Ndt2/wcBlA4h1NdJ/TVFS/NA6qJ3QrutKSmqlkJrfukZfMtW98kww==}
-    engines: {node: '>=22'}
-    peerDependencies:
-      typescript: '>=5.0.4'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-
   '@tsconfig/node10@1.0.11':
     resolution: {integrity: sha512-DcRjDCujK/kCk/cUe8Xz8ZSpm8mS3mNNpta+jGCA6USEDfktlNvm1+IuZ9eTcDbNk41BHwpHHeW+N1lKCz4zOw==}
 
@@ -2164,8 +2161,8 @@ packages:
     resolution: {integrity: sha512-GipyPsXO1anza0AOZdy69Im7hGFCNB7Y/NGjDlZGJ3GJJLtwNSb2vrzYrTYJRrRloVx7pl+bhUaTB8yiccPvFQ==}
     engines: {node: '> 0.1.90'}
 
-  facilitators@0.0.7:
-    resolution: {integrity: sha512-XLuX+uVba81uxNksSa+RaqL3OPjDH1ubvqhLaf8DdPRTHCDcNaZjP0FstAny+rMU9u9Ck+ynTaxF0T8E1Y02Ew==}
+  facilitators@0.0.8:
+    resolution: {integrity: sha512-OgcbVzvkYEj062pPZuOPfuuy3NTxp9TttLoxmuvhuBc4dPCFr8ujKtaBNyaTv6vt2OreHjX+OTcVwSNp2R74kw==}
     engines: {node: '>=18.0.0'}
 
   fast-deep-equal@3.1.3:
@@ -3405,9 +3402,6 @@ packages:
   zod@3.22.4:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
 
-  zod@3.25.75:
-    resolution: {integrity: sha512-OhpzAmVzabPOL6C3A3gpAifqr9MqihV/Msx3gor2b2kviCgcb+HM9SEOpMWwwNp9MRunWnhtAKUoo0AHhjyPPg==}
-
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
@@ -3758,14 +3752,19 @@ snapshots:
       ethereum-cryptography: 2.2.1
       micro-ftch: 0.3.1
 
-  '@faremeter/fetch@0.10.3':
+  '@faremeter/fetch@0.11.0':
     dependencies:
-      '@faremeter/types': 0.10.3
+      '@faremeter/types': 0.11.0
       arktype: 2.1.21
 
   '@faremeter/info@0.10.3':
     dependencies:
       '@faremeter/types': 0.10.3
+      arktype: 2.1.21
+
+  '@faremeter/info@0.11.0':
+    dependencies:
+      '@faremeter/types': 0.11.0
       arktype: 2.1.21
 
   '@faremeter/payment-solana@0.10.3(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3)(utf-8-validate@5.0.10)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
@@ -3790,6 +3789,10 @@ snapshots:
       - ws
 
   '@faremeter/types@0.10.3':
+    dependencies:
+      arktype: 2.1.21
+
+  '@faremeter/types@0.11.0':
     dependencies:
       arktype: 2.1.21
 
@@ -5725,50 +5728,6 @@ snapshots:
       '@tanstack/query-core': 5.90.5
       react: 18.3.1
 
-  '@thirdweb-dev/nexus@0.1.0(@solana/sysvars@5.0.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.90.5)(@tanstack/react-query@5.90.5(react@18.3.1))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
-    dependencies:
-      x402: 0.7.0(@solana/sysvars@5.0.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.90.5)(@tanstack/react-query@5.90.5(react@18.3.1))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      zod: 3.25.75
-    optionalDependencies:
-      typescript: 5.9.3
-    transitivePeerDependencies:
-      - '@azure/app-configuration'
-      - '@azure/cosmos'
-      - '@azure/data-tables'
-      - '@azure/identity'
-      - '@azure/keyvault-secrets'
-      - '@azure/storage-blob'
-      - '@capacitor/preferences'
-      - '@deno/kv'
-      - '@netlify/blobs'
-      - '@planetscale/database'
-      - '@react-native-async-storage/async-storage'
-      - '@solana/sysvars'
-      - '@tanstack/query-core'
-      - '@tanstack/react-query'
-      - '@types/react'
-      - '@upstash/redis'
-      - '@vercel/blob'
-      - '@vercel/functions'
-      - '@vercel/kv'
-      - aws4fetch
-      - bufferutil
-      - db0
-      - debug
-      - encoding
-      - expo-auth-session
-      - expo-crypto
-      - expo-web-browser
-      - fastestsmallesttextencoderdecoder
-      - immer
-      - ioredis
-      - react
-      - react-native
-      - supports-color
-      - uploadthing
-      - utf-8-validate
-      - ws
-
   '@tsconfig/node10@1.0.11': {}
 
   '@tsconfig/node12@1.0.11': {}
@@ -6986,10 +6945,9 @@ snapshots:
 
   eyes@0.1.8: {}
 
-  facilitators@0.0.7(@solana/sysvars@5.0.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.90.5)(@tanstack/react-query@5.90.5(react@18.3.1))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)):
+  facilitators@0.0.8(@solana/sysvars@5.0.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.90.5)(@tanstack/react-query@5.90.5(react@18.3.1))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)):
     dependencies:
       '@coinbase/x402': 0.6.6(@solana/sysvars@5.0.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.90.5)(@tanstack/react-query@5.90.5(react@18.3.1))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@thirdweb-dev/nexus': 0.1.0(@solana/sysvars@5.0.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.90.5)(@tanstack/react-query@5.90.5(react@18.3.1))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       x402: 0.6.6(@solana/sysvars@5.0.0(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.90.5)(@tanstack/react-query@5.90.5(react@18.3.1))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
     transitivePeerDependencies:
       - '@azure/app-configuration'
@@ -8462,8 +8420,6 @@ snapshots:
       zod: 3.25.76
 
   zod@3.22.4: {}
-
-  zod@3.25.75: {}
 
   zod@3.25.76: {}
 
