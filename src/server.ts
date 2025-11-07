@@ -334,16 +334,14 @@ export async function run() {
                     "type": "string",
                     "format": "uri",
                     "title": "Mainnet RPC URL",
-                    "description": "RPC URL for Solana mainnet",
-                    "x-secret": true
+                    "description": "RPC URL for Solana mainnet"
                 },
                 "devnetRpcUrl": {
                     "type": "string",
                     "format": "uri",
                     "title": "Devnet RPC URL",
                     "description": "RPC URL for Solana devnet",
-                    "default": DEFAULT_DEVNET_RPC_URL,
-                    "x-secret": true
+                    "default": DEFAULT_DEVNET_RPC_URL
                 },
                 "useSolanaMcpServer": {
                     "type": "boolean",
