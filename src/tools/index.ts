@@ -26,10 +26,6 @@ export const solX402Tools: ToolDefinition[] = [
         },
         callback: async () => {
             try {
-                const imageUrl = "https://raw.githubusercontent.com/leandrogavidia/solx402-mcp-server/refs/heads/main/assets/x402-protocol-flow.avif";
-                const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-                const base64Image = Buffer.from(response.data).toString("base64");
-
                 return {
                     content: [
                         {
@@ -37,9 +33,8 @@ export const solX402Tools: ToolDefinition[] = [
                             text: 'This is a x402 diagram flow:',
                         },
                         {
-                            type: "image",
-                            data: base64Image,
-                            mimeType: "image/avif",
+                            type: "text",
+                            text: "https://raw.githubusercontent.com/leandrogavidia/solx402-mcp-server/refs/heads/main/assets/x402-protocol-flow.avif",
                         },
                     ],
                 };
