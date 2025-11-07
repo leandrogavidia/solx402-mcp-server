@@ -13,8 +13,5 @@
 
     "start:mcp": "pnpm --filter ./apps/mcp-server run start",
     "start:web": "pnpm --filter ./apps/web run start"
-  },
-  "engines": {
-    "node": ">=18"
   }
 }
