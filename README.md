@@ -1,3 +1,4 @@
+```markdown
 <div align="center">
 
 <p></p>
@@ -9,6 +10,8 @@
 <h1>SOLx402 MCP Server</h1>
 
 <p>
+<a href="https://smithery.ai/server/@leandrogavidia/solx402-mcp-server"><img alt="Smithery Badge" src="https://smithery.ai/badge/@leandrogavidia/solx402-mcp-server"></a>
+&nbsp;&nbsp;
 <a href="https://www.x402.org/" target="_blank">
 <img src="./assets/x402-badge.png" width=132 alt="x402 Badge">
 </a>
@@ -211,3 +214,4 @@ You can use environment variables:
 ---
 
 ## License: MIT
+```
