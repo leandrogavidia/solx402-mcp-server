@@ -21,7 +21,7 @@ export default function Hero() {
           <Link href="https://github.com/leandrogavidia/solx402-mcp-server" target="_blank" rel="noopener noreferrer">
             <Button
               variant="outline"
-              className="border-border text-foreground hover:bg-muted px-8 bg-transparent"
+              className="cursor-pointer border-border text-foreground hover:text-foreground hover:bg-muted px-8 bg-transparent"
               size="lg"
             >
               GitHub Repo

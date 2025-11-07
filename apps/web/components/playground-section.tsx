@@ -20,7 +20,7 @@ export default function PlaygroundSection() {
               <Image src="/smithery-playground.jpg" alt="Smithery Playground" className="w-full h-auto" width={1920} height={1080} />
             </div>
             <Link href="https://smithery.ai/chat?mcp=@leandrogavidia/solx402-mcp-server" target="_blank" rel="noopener noreferrer">
-                <Button className="w-full bg-[rgb(255,50,0)] hover:bg-[rgb(200,40,0)] text-white">
+                <Button className="cursor-pointer w-full bg-[rgb(255,50,0)] hover:bg-[rgb(200,40,0)] text-white">
                     Open Smithery Playground
                 </Button>
             </Link>

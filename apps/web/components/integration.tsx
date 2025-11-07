@@ -71,7 +71,7 @@ export default function Integration() {
 
             <Link href="https://smithery.ai/server/@leandrogavidia/solx402-mcp-server" target="_blank" rel="noopener noreferrer">
               <Button
-                className="whitespace-nowrap border-0 text-white"
+                className="cursor-pointer whitespace-nowrap border-0 text-white"
                 style={{ backgroundColor: "rgb(255, 50, 0)" }}
                 onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgb(220, 40, 0)")}
                 onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgb(255, 50, 0)")}
