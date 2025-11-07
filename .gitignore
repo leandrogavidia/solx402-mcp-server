@@ -1,65 +1,38 @@
-# -----------------------------
-# Node.js / TypeScript / pnpm MCP Server
-# -----------------------------
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Dependency directories
-node_modules/
-.pnpm-store/
+# Dependencies
+node_modules
+.pnp
+.pnp.js
 
-# Build output
-dist/
-build/
-out/
-coverage/
-
-# TypeScript cache
-*.tsbuildinfo
-
-# Logs
-logs/
-*.log
-npm-debug.log*
-pnpm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Environment variables
+# Local env files
 .env
-.env.*.local
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# OS files
-.DS_Store
-Thumbs.db
+# Testing
+coverage
 
-# IDEs and editors
-.vscode/
-.idea/
-*.swp
+# Turbo
+.turbo
 
-# Optional lockfiles (keep one if your team uses it consistently)
-# package-lock.json
-# yarn.lock
+# Vercel
+.vercel
 
-# Tests & temporary files
-jest-test-results.json
-test-results/
-.tmp/
-temp/
+# Build Outputs
+.next/
+out/
+build
+dist
+
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Misc
-*.bak
-*.orig
-*.rej
-
-# Optional: ignore generated type definitions if you bundle with tsup or tsc --declaration
-*.d.ts
-!src/types/**/*.d.ts
-
-# MCP-specific
-# If you have protocol or schema outputs, ignore them here:
-generated/
-schemas/
+.DS_Store
+*.pem
