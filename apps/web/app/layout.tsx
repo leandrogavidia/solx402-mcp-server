@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ThemeProvider from "@/components/theme-provider";
+import Header from "@/components/header";
 
 export const metadata: Metadata = {
   title: "SOLx402 MCP Server",
@@ -51,6 +52,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`font-sans antialiased`}>
+        <Header />
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

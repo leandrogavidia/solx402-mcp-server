@@ -8,7 +8,7 @@ export default function PlaygroundSection() {
   return (
     <section className="px-4 py-20 sm:px-6 lg:px-8 bg-card">
       <div className="mx-auto max-w-6xl">
-        <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="rounded-lg border border-border bg-background p-8 flex flex-col">
             <div className="flex items-center gap-2 mb-4">
               <Image src="/smithery-logo.svg" className="w-32 h-auto" alt="Smithery Logo" width={24} height={24}  />
@@ -26,39 +26,20 @@ export default function PlaygroundSection() {
             </Link>
           </div>
 
-          {/* <div className="rounded-lg border border-border bg-background p-8 flex flex-col">
+          <div className="rounded-lg border border-border bg-background p-8 flex flex-col">
             <div className="flex items-center gap-2 mb-4">
-              <PlayCircle className="h-6 w-6 text-foreground" />
-              <h3 className="text-2xl font-bold text-foreground">Interactive Playground</h3>
+              <h3 className="text-2xl font-bold text-foreground">NextJS Playground</h3>
             </div>
-            <p className="text-muted-foreground mb-6">Test MCP server tools and queries in real-time</p>
-            <div className="flex-1 rounded-lg border border-border bg-muted p-6 mb-6 flex items-center justify-center min-h-64">
-              <div className="text-center">
-                <p className="text-muted-foreground mb-2">Playground coming soon</p>
-                <p className="text-xs text-muted-foreground">Interactive testing environment</p>
-              </div>
+            <p className="text-muted-foreground mb-6">Test and interact with the SOLx402 MCP server in NextJS&apos;s visual playground environment</p>
+            <div className="flex-1 rounded-lg border-2 border-border bg-muted overflow-hidden mb-6 flex items-center justify-center min-h-64 ">
+              <Image src="/next-js-playground.jpg" alt="Smithery Playground" className="w-full h-auto" width={1920} height={1080} />
             </div>
-            <Button disabled className="w-full bg-muted text-muted-foreground hover:bg-muted cursor-not-allowed">
-              Launch Playground
-            </Button>
-          </div> */}
-
-          {/* <div className="rounded-lg border border-border bg-background p-8 flex flex-col">
-            <div className="flex items-center gap-2 mb-4">
-              <MessageCircle className="h-6 w-6 text-foreground" />
-              <h3 className="text-2xl font-bold text-foreground">Telegram Bot</h3>
-            </div>
-            <p className="text-muted-foreground mb-6">Chat with SOLx402 bot for quick tests and documentation</p>
-            <div className="flex-1 rounded-lg border border-border bg-muted p-6 mb-6 flex items-center justify-center min-h-64">
-              <div className="text-center">
-                <p className="text-foreground mb-2">@solx402_bot</p>
-                <p className="text-xs text-muted-foreground">Telegram integration</p>
-              </div>
-            </div>
-            <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground border-0">
-              Open Telegram Bot
-            </Button>
-          </div> */}
+            <Link href="/playground">
+                <Button className="cursor-pointer w-full bg-black hover:bg-[rgb(50,50,50)] text-white">
+                    Open Playground
+                </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </section>

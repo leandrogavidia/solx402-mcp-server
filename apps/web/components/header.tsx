@@ -14,9 +14,9 @@ export default function Header() {
       setMounted(true)
       setIsDark(document.documentElement.classList.contains("dark"))
     }
-    
+
     const rafId = requestAnimationFrame(updateState)
-    
+
     return () => cancelAnimationFrame(rafId)
   }, [])
 
@@ -45,15 +45,12 @@ export default function Header() {
           </div>
 
           <nav className="hidden items-center gap-1 md:flex">
-            {["Tools", "Integration", "Config"].map((item) => (
-              <Link
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
-              >
-                {item}
-              </Link>
-            ))}
+
+            <Link href="/#tools" className="rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors">Tools</Link>
+            <Link href="/#integration" className="rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors">Integration</Link>
+            <Link href="/#config" className="rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors">Config</Link>
+            <Link href="/playground" className="rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors">Playground</Link>
+
           </nav>
 
           <div className="flex items-center gap-2">
