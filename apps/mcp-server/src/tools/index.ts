@@ -34,7 +34,7 @@ export const solX402Tools: ToolDefinition[] = [
                         },
                         {
                             type: "text",
-                            text: "https://raw.githubusercontent.com/leandrogavidia/solx402-mcp-server/refs/heads/main/assets/x402-protocol-flow.avif",
+                            text: "https://raw.githubusercontent.com/leandrogavidia/solx402-mcp-server/refs/heads/main/apps/mcp-server/assets/x402-protocol-flow.avif",
                         },
                     ],
                 };
