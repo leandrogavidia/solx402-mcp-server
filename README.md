@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/leandrogavidia-solx402-mcp-server-badge.png)](https://mseep.ai/app/leandrogavidia-solx402-mcp-server)
+
 <div align="center">
 
 <p></p>
